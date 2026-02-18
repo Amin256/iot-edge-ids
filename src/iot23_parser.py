@@ -1,4 +1,5 @@
 from __future__ import annotations
+from fileinput import filename
 
 import pandas as pd
 from pathlib import Path
@@ -70,6 +71,8 @@ def main():
     # Parse each selected IoT23 log file
     for file_path in IOT23_SELECTED_DIR.glob("*.log.labeled"):
         df = parse_log_file(file_path)
+        capture_name = file_path.name.replace("_conn.log.labeled", "")
+        df["capture_name"] = capture_name
         all_dfs.append(df)
 
     # Combine all parsed DataFrames
