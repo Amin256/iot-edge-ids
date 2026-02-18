@@ -23,12 +23,17 @@ def parse_log_file(file_path: Path) -> pd.DataFrame:
     
     # We only keep a subset of columns relevant for flow-level analysis and binary classification
     selected_cols = [
-        "ts",
-        "duration",
-        "orig_bytes",
-        "resp_bytes",
-        "orig_pkts",
-        "resp_pkts"
+    "ts",
+    "duration",
+    "orig_bytes",
+    "resp_bytes",
+    "orig_pkts",
+    "resp_pkts",
+    "orig_ip_bytes",
+    "resp_ip_bytes",
+    "proto",
+    "conn_state",
+    "service"
     ]
 
     dfs = []
