@@ -211,6 +211,8 @@ __marimo__/
 # Project datasets
 data/raw/
 data/processed/
+data/iot23_processed/
 *.pcap
 *.pcapng
 *.parquet
+*.csv
