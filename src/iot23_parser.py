@@ -84,6 +84,15 @@ def main():
     combined_df = pd.concat(all_dfs, ignore_index=True)
     print("\nBefore balancing:")
     print(combined_df["binary_label"].value_counts())
+    
+    # Save unbalanced dataset (real distribution)
+    FULL_OUTPUT_CSV = Path("data/iot23_processed/iot23_full_unbalanced.csv")
+
+    FULL_OUTPUT_CSV.parent.mkdir(parents = True, exist_ok = True)
+    combined_df.to_csv(FULL_OUTPUT_CSV, index=False)
+
+    print("\nFull unbalanced dataset saved:")
+    print(combined_df["binary_label"].value_counts())
 
     # Balance dataset by downsampling the majority class (malicious) to match the minority class (benign)
     benign_df = combined_df[combined_df["binary_label"] == "BENIGN"]
