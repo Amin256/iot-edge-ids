@@ -2,6 +2,7 @@ import json
 import joblib
 import pandas as pd
 import paho.mqtt.client as mqtt
+import time
 
 # load model and features
 model = joblib.load("xgb_ids_model.pkl")
@@ -23,6 +24,9 @@ true_negative = 0
 
 true_benign = 0
 true_malicious = 0
+
+total_inference_time = 0
+num_predictions = 0
 
 def on_connect(client, userdata, flags, rc):
     print(f"Connected to broker with code {rc}")
@@ -49,8 +53,18 @@ def on_message(client, userdata, msg):
     df = df.apply(pd.to_numeric, errors='coerce')
     df.fillna(0, inplace=True)
     
+    start_time = time.time()
+    
+    global total_inference_time, num_predictions
+    
+    total_inference_time += inference_time
+    num_predictions += 1
+    
     prediction = model.predict(df)[0]
     probability = model.predict_proba(df)[0][1]
+    
+    end_time = time.time()
+    inference_time = end_time - start_time * 1000
     
     result = {
         "prediction": int(prediction),
@@ -60,6 +74,10 @@ def on_message(client, userdata, msg):
     threshold_prediction = 1 if probability > 0.355 else 0
     
     print(f"Raw prediction: {prediction}, Threshold: {threshold_prediction}, Probability: {probability:.3f}, True label: {true_label}")
+    
+    if num_predictions % 100 == 0:
+        avg_inference_time = total_inference_time / num_predictions
+        print(f"Average inference time: {avg_inference_time:.2f} ms")
     
     global correct, true_positive, false_positive, false_negative, true_benign, true_malicious, true_negative
     if true_label == 0:
@@ -105,6 +123,8 @@ def on_message(client, userdata, msg):
     print(f"Accuracy: {accuracy:.3f}")
     print(f"Detection Rate: {detection_rate:.3f}")
     print(f"False Positive Rate: {false_positive_rate:.3f}")
+    
+    print(f"Inference time: {inference_time:.2f} ms")
     
     client.publish(OUTPUT_TOPIC, json.dumps(result))
     
