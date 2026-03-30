@@ -57,9 +57,9 @@ def on_message(client, userdata, msg):
         "probability": float(probability),
     }
     
-    print(f"Raw prediction: {prediction}, Threshold: {threshold_prediction}, Probability: {probability:.3f}, True label: {true_label}")
-    
     threshold_prediction = 1 if probability > 0.355 else 0
+    
+    print(f"Raw prediction: {prediction}, Threshold: {threshold_prediction}, Probability: {probability:.3f}, True label: {true_label}")
     
     global correct, true_positive, false_positive, false_negative, true_benign, true_malicious, true_negative
     if true_label == 0:
