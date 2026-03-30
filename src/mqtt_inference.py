@@ -4,8 +4,8 @@ import pandas as pd
 import paho.mqtt.client as mqtt
 
 # load model and features
-model = joblib.load("rf_ids_model.pkl")
-feature_columns = joblib.load("feature_columns.pkl")
+model = joblib.load("xgb_ids_model.pkl")
+feature_columns = joblib.load("feature_cols.pkl")
 
 BROKER = "127.0.0.1"
 INPUT_TOPIC = "iot/traffic"
@@ -58,7 +58,7 @@ def on_message(client, userdata, msg):
     
     print(f"Prediction: {prediction}, Probability: {probability:.3f}")
     
-    threshold_prediction = 1 if probability > 0.5 else 0
+    threshold_prediction = 1 if probability > 0.355 else 0
     
     global correct, true_positive, false_positive, false_negative, true_benign, true_malicious
     if true_label == 0:
@@ -78,7 +78,7 @@ def on_message(client, userdata, msg):
     elif threshold_prediction == 0 and true_label == 1:
         false_negative += 1
     
-    if probability > 0.5:
+    if probability > 0.355:
         print(f"ALERT: Suspicious traffic detected!")
     
     global benign_count, malicious_count, total_count

@@ -11,7 +11,7 @@ TOPIC = "iot/traffic"
 client = mqtt.Client()
 client.connect(BROKER, PORT, 60)
 
-df =pd.read_csv("data/iot23_processed/iot23_binary_flows.csv")
+df = pd.read_csv("data/iot23_processed/iot23_encoded.csv")
 
 benign_df = df[df["binary_label"] == "BENIGN"]
 malicious_df = df[df["binary_label"] == "MALICIOUS"]

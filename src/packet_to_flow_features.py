@@ -16,8 +16,8 @@ def main() -> None:
     df = pd.read_csv(in_csv)
 
     # Ensure numeric timestamp
-    df["timestamp"] = pd.to_numeric(df["timestamp"], errors="coerce")
-    df = df.dropna(subset=["timestamp"])
+    df["timestamp"] = pd.to_numeric(df["timestamp"], errors = "coerce")
+    df = df.dropna(subset = ["timestamp"])
     # Define a time window (60 seconds) to group packets into flows
     WINDOW_S = 60
 
@@ -37,15 +37,15 @@ def main() -> None:
     ).reset_index()
 
     # Calculate flow duration and rates, handling zero-duration flows to avoid division by zero
-    agg["duration_s"] = (agg["end_time"] - agg["start_time"]).clip(lower=0.0)
+    agg["duration_s"] = (agg["end_time"] - agg["start_time"]).clip(lower = 0.0)
     agg["packets_per_s"] = agg["packet_count"] / agg["duration_s"].replace(0.0, 1.0)
     agg["bytes_per_s"] = agg["total_bytes"] / agg["duration_s"].replace(0.0, 1.0)
 
     # Fill NaN values in std_pkt_len with 0.0 (occurs when packet_count is 1)
     agg["std_pkt_len"] = agg["std_pkt_len"].fillna(0.0)
 
-    out_csv.parent.mkdir(parents=True, exist_ok=True)
-    agg.to_csv(out_csv, index=False)
+    out_csv.parent.mkdir(parents = True, exist_ok = True)
+    agg.to_csv(out_csv, index = False)
 
     print(f"[+] Input packets: {len(df):,}")
     print(f"[+] Output flows: {len(agg):,}")
