@@ -57,7 +57,7 @@ def on_message(client, userdata, msg):
         "probability": float(probability),
     }
     
-    threshold_prediction = 1 if probability > 0.36 else 0
+    threshold_prediction = 1 if probability > 0.355 else 0
     
     print(f"Raw prediction: {prediction}, Threshold: {threshold_prediction}, Probability: {probability:.3f}, True label: {true_label}")
     
@@ -81,7 +81,7 @@ def on_message(client, userdata, msg):
     elif threshold_prediction == 0 and true_label == 1:
         false_negative += 1
     
-    if probability > 0.36:
+    if probability > 0.355:
         print(f"ALERT: Suspicious traffic detected!")
     
     global benign_count, malicious_count, total_count
