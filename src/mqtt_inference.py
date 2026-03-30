@@ -57,6 +57,7 @@ def on_message(client, userdata, msg):
     
     global total_inference_time, num_predictions
     
+    inference_time = end_time - start_time * 1000
     total_inference_time += inference_time
     num_predictions += 1
     
@@ -64,7 +65,6 @@ def on_message(client, userdata, msg):
     probability = model.predict_proba(df)[0][1]
     
     end_time = time.time()
-    inference_time = end_time - start_time * 1000
     
     result = {
         "prediction": int(prediction),
