@@ -4,7 +4,7 @@ import random
 import pandas as pd
 import paho.mqtt.client as mqtt
 
-BROKER = "localhost"
+BROKER = "192.168.0.238"
 PORT = 1883
 TOPIC = "iot/traffic"
 
