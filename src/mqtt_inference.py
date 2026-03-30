@@ -45,6 +45,8 @@ def preprocess(sample_dict):
     return df
 
 def on_message(client, userdata, msg):
+    global total_inference_time, num_predictions
+    
     data = json.loads(msg.payload.decode())
     true_label = data.pop("true_label")
     df = preprocess(data)
@@ -53,17 +55,15 @@ def on_message(client, userdata, msg):
     df = df.apply(pd.to_numeric, errors='coerce')
     df.fillna(0, inplace=True)
     
-    start_time = time.time()
+    start_time = time.perf_counter()
     
-    global total_inference_time, num_predictions
+    prediction = model.predict(df)[0]
+    probability = model.predict_proba(df)[0][1]
     
     end_time = time.perf_counter()
     inference_time = (end_time - start_time) * 1000
     total_inference_time += inference_time
     num_predictions += 1
-    
-    prediction = model.predict(df)[0]
-    probability = model.predict_proba(df)[0][1]
     
     result = {
         "prediction": int(prediction),
