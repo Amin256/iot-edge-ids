@@ -19,6 +19,7 @@ correct = 0
 true_positive = 0
 false_positive = 0
 false_negative = 0
+true_negative = 0
 
 true_benign = 0
 true_malicious = 0
@@ -56,18 +57,18 @@ def on_message(client, userdata, msg):
         "probability": float(probability),
     }
     
-    print(f"Prediction: {prediction}, Probability: {probability:.3f}")
+    print(f"Raw prediction: {prediction}, Threshold: {threshold_prediction}, Probability: {probability:.3f}, True label: {true_label}")
     
     threshold_prediction = 1 if probability > 0.355 else 0
     
-    global correct, true_positive, false_positive, false_negative, true_benign, true_malicious
+    global correct, true_positive, false_positive, false_negative, true_benign, true_malicious, true_negative
     if true_label == 0:
         true_benign += 1
     else:
         true_malicious += 1
         
     #Accuracy tracking
-    if prediction == true_label:
+    if threshold_prediction == true_label:
         correct += 1
     
     #Detection tracking
@@ -75,6 +76,8 @@ def on_message(client, userdata, msg):
         true_positive += 1
     elif threshold_prediction == 1 and true_label == 0:
         false_positive += 1
+    elif threshold_prediction == 0 and true_label == 0:
+        true_negative += 1
     elif threshold_prediction == 0 and true_label == 1:
         false_negative += 1
     
@@ -89,10 +92,15 @@ def on_message(client, userdata, msg):
     else:
         malicious_count += 1
     
-    print(f"Total: {total_count}, Benign: {benign_count}, Malicious: {malicious_count}")
     accuracy = correct / total_count if total_count > 0 else 0
     detection_rate = true_positive / true_malicious if true_malicious > 0 else 0
     false_positive_rate = false_positive / true_benign if true_benign > 0 else 0
+    
+    print(f"Total samples: {total_count}")
+    
+    print(f"TRUE distribution -> Benign: {true_benign}, Malicious: {true_malicious}")
+    print(f"PREDICTION distribution -> Benign: {benign_count}, Malicious: {malicious_count}")
+    print(f"TP: {true_positive}, FP: {false_positive}, TN: {true_negative}, FN: {false_negative}")
     
     print(f"Accuracy: {accuracy:.3f}")
     print(f"Detection Rate: {detection_rate:.3f}")
