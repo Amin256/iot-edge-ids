@@ -57,8 +57,8 @@ def on_message(client, userdata, msg):
     
     global total_inference_time, num_predictions
     
-    end_time = time.time()
-    inference_time = end_time - start_time * 1000
+    end_time = time.perf_counter()
+    inference_time = (end_time - start_time) * 1000
     total_inference_time += inference_time
     num_predictions += 1
     

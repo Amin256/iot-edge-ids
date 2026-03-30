@@ -10,7 +10,7 @@ BROKER = "192.168.0.238"
 PORT = 1883
 TOPIC = "iot/traffic"
 
-N_SAMPLES = 1000
+N_SAMPLES = 10000
 BENIGN_RATIO = 0.95
 
 client = mqtt.Client()
