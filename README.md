@@ -29,10 +29,10 @@ The focus is on deploying supervised ML models on resource-constrained devices (
 - Raspberry Pi 5
 
 ## Repository structure
-notebooks/ --> Model training and evaluation notebook
-src/ --> Core pipeline scripts
-models/ --> Trained ML models
-data/ --> Processed datasets (subsets only)
+- notebooks/ --> Model training and evaluation notebook
+- src/ --> Core pipeline scripts
+- models/ --> Trained ML models
+- data/ --> Processed datasets (subsets only)
 
 ## Key Files
 - `notebooks/baseline_model.ipynb` --> Main notebook containing model training, evaluation and comparison experiments
