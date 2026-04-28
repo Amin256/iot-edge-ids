@@ -51,9 +51,9 @@ def on_message(client, userdata, msg):
     true_label = data.pop("true_label")
     df = preprocess(data)
     
-    df.replace('-', 0, inplace=True)
-    df = df.apply(pd.to_numeric, errors='coerce')
-    df.fillna(0, inplace=True)
+    df.replace('-', 0, inplace = True)
+    df = df.apply(pd.to_numeric, errors = 'coerce')
+    df.fillna(0, inplace = True)
     
     start_time = time.perf_counter()
     

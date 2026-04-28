@@ -39,8 +39,8 @@ def main() -> None:
     
     # Convert the PCAP to a DataFrame of packet features
     df = pcap_to_packet_features(pcap_path)
-    out_csv.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(out_csv, index=False)
+    out_csv.parent.mkdir(parents = True, exist_ok = True)
+    df.to_csv(out_csv, index = False)
 
     print(f"[+] IP packets extracted: {len(df)}")
     print(f"[+] Saved: {out_csv}")

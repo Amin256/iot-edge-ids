@@ -26,14 +26,14 @@ def main() -> None:
     group_cols = ["src_ip", "dst_ip", "protocol", "time_bin"]
     # Aggregate packet features into flow features
     agg = df.groupby(group_cols).agg(
-        start_time=("timestamp", "min"),
-        end_time=("timestamp", "max"),
-        packet_count=("packet_length", "size"),
-        total_bytes=("packet_length", "sum"),
-        mean_pkt_len=("packet_length", "mean"),
-        std_pkt_len=("packet_length", "std"),
-        min_pkt_len=("packet_length", "min"),
-        max_pkt_len=("packet_length", "max"),
+        start_time = ("timestamp", "min"),
+        end_time = ("timestamp", "max"),
+        packet_count = ("packet_length", "size"),
+        total_bytes = ("packet_length", "sum"),
+        mean_pkt_len = ("packet_length", "mean"),
+        std_pkt_len = ("packet_length", "std"),
+        min_pkt_len = ("packet_length", "min"),
+        max_pkt_len = ("packet_length", "max"),
     ).reset_index()
 
     # Calculate flow duration and rates, handling zero-duration flows to avoid division by zero
